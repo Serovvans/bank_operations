@@ -14,6 +14,14 @@ def load_operations() -> List[Dict]:
 
     return operations
 
+
+def fill_omissions(operations: List[Dict]) -> List[Dict]:
+    result = operations.copy()
+    for item in result:
+        if "from" not in item:
+            item["from"] = ""
+
+    return result
 # Строковые представления номера счёта и карты
 # Изменение формата даты
 # Строковое представлене суммы операции
