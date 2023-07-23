@@ -10,7 +10,8 @@ def load_operations() -> List[Dict]:
     :return: список словарей с информацией об операциях
     """
     file = os.path.join("data", "operations.json")
-    operations = json.loads(file)
+    with open(file) as f:
+        operations = json.load(f)
 
     return operations
 
