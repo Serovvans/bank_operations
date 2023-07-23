@@ -16,6 +16,11 @@ def load_operations() -> List[Dict]:
 
 
 def fill_omissions(operations: List[Dict]) -> List[Dict]:
+    """
+    Если отправитель оперции пропещен, в словарь добавляется вместо него пустая строка
+    :param operations: список словарей с описанием операций
+    :return: список словарей с описанием операций, в которых заполнили пропуск отправителя
+    """
     result = operations.copy()
     for item in result:
         if "from" not in item:
