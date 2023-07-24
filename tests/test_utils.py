@@ -13,3 +13,4 @@ def test_fill_omissions():
 
 def test_card_number_to_string():
     assert card_number_to_string("1596837868705199") == "1596 83** **** 5199"
+    assert card_number_to_string("") == ""

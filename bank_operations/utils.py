@@ -37,6 +37,9 @@ def card_number_to_string(card_number: str) -> str:
     :param card_number: номер карты отправителя
     :return: Строковое представление номера карты по шаблону XXXX XX** **** XXXX
     """
+    if not card_number:
+        return ""
+
     return card_number[:4] + " " + card_number[4:6] + "** **** " + card_number[-4:]
 # Строковые представления номера счёта и карты
 # Изменение формата даты
