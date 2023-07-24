@@ -1,4 +1,5 @@
-from bank_operations.utils import load_operations, fill_omissions, card_number_to_string
+from bank_operations.utils import load_operations, fill_omissions, card_number_to_string, \
+    bank_account_to_string
 
 
 def test_load_operations(test_data):
@@ -14,3 +15,8 @@ def test_fill_omissions():
 def test_card_number_to_string():
     assert card_number_to_string("1596837868705199") == "1596 83** **** 5199"
     assert card_number_to_string("") == ""
+
+
+def test_bank_account_to_string():
+    assert bank_account_to_string("64686473678894779589") == "**9589"
+    assert bank_account_to_string("") == ""

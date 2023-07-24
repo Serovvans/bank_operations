@@ -41,6 +41,18 @@ def card_number_to_string(card_number: str) -> str:
         return ""
 
     return card_number[:4] + " " + card_number[4:6] + "** **** " + card_number[-4:]
+
+
+def bank_account_to_string(bank_account: str) -> str:
+    """
+    Переводит номер счета получателя в шаблонное строковое представление
+    :param bank_account: номер счета получателя
+    :return: Номер счета в формате **XXXX
+    """
+    if not bank_account:
+        return ""
+
+    return "**" + bank_account[-4:]
 # Строковые представления номера счёта и карты
 # Изменение формата даты
 # Строковое представлене суммы операции
