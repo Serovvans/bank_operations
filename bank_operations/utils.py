@@ -53,7 +53,25 @@ def bank_account_to_string(bank_account: str) -> str:
         return ""
 
     return "**" + bank_account[-4:]
-# Строковые представления номера счёта и карты
-# Изменение формата даты
+
+
+def format_date(date: str) -> Dict:
+    """
+    Переводит дату в нужный формат ДД.ММ.ГГГГ
+    :param date: строковое представление даты операции
+    :return: словарь, в которос содержится год, месяц, число и время
+    """
+    items = list(date.split("-"))
+    year = items[0]
+    month = items[1]
+    day, time = items[2].split("T")
+    # Переводим время в количество секунд от начала дня
+    time = list(time.split(":"))
+    float_time = float(time[0]) * 60 * 60 + float(time[1]) * 60 + float(time[2])
+
+    return {"year": int(year),
+            "month": int(month),
+            "day": int(day),
+            "time": float_time}
 # Строковое представлене суммы операции
 # Получение последних 5 выполненных операций

@@ -1,5 +1,5 @@
 from bank_operations.utils import load_operations, fill_omissions, card_number_to_string, \
-    bank_account_to_string
+    bank_account_to_string, format_date
 
 
 def test_load_operations(test_data):
@@ -20,3 +20,10 @@ def test_card_number_to_string():
 def test_bank_account_to_string():
     assert bank_account_to_string("64686473678894779589") == "**9589"
     assert bank_account_to_string("") == ""
+
+
+def test_format_date():
+    assert format_date("2019-08-26T10:50:58.294041").get("year") == 2019
+    assert format_date("2019-08-26T10:50:58.294041").get("month") == 8
+    assert format_date("2019-08-26T10:50:58.294041").get("day") == 26
+    assert format_date("2019-08-26T10:50:58.294041").get("time") == 10*60*60 + 50*60 + 58.294041
