@@ -40,7 +40,7 @@ def card_number_to_string(card_number: str) -> str:
     if not card_number:
         return ""
 
-    return card_number[:4] + " " + card_number[4:6] + "** **** " + card_number[-4:]
+    return f"{card_number[:4]} {card_number[4:6]}** **** {card_number[-4:]}"
 
 
 def bank_account_to_string(bank_account: str) -> str:
@@ -73,5 +73,14 @@ def format_date(date: str) -> Dict:
             "month": int(month),
             "day": int(day),
             "time": float_time}
+
+
+def format_operation_amount(amount: Dict) -> str:
+    """
+    Представляет сумму операции в нужном формате
+    :param amount: информация о сумме оперции
+    :return: строковое представление суммы операций
+    """
+    return f"{amount['amount']} {amount['currency']['name']}"
 # Строковое представлене суммы операции
 # Получение последних 5 выполненных операций
