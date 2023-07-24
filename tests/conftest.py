@@ -5,6 +5,10 @@ import json
 
 @pytest.fixture(scope="session")
 def test_data():
+    """
+    Фикстура с 2 примерами операций
+    :return:
+    """
     return [{
         "id": 441945886,
         "state": "EXECUTED",
@@ -40,12 +44,21 @@ def test_data():
 
 @pytest.fixture(scope="session")
 def test_string_operation():
+    """
+    Фикстура примера текстового вывода операции
+    :return:
+    """
     return "26.08.2019 Перевод организации\nMaestro 1596 83** **** 5199 -> Счет **9589\n31957.58 руб."
 
 
 @pytest.fixture(scope="session", autouse=True)
 def create_file(test_data):
-    file = os.path.join("data", "test_organisations.json")
+    """
+    Создаёт файл с примерами данных и удаляет его после выполнения тестов
+    :param test_data: Пример данных об операциях
+    :return:
+    """
+    file = os.path.join("data", "test_operations.json")
     with open(file, "w") as f:
         json.dump(test_data, f)
 
