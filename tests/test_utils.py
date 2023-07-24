@@ -1,5 +1,5 @@
 from bank_operations.utils import load_operations, fill_omissions, card_number_to_string, \
-    bank_account_to_string, format_date, format_operation_amount
+    bank_account_to_string, format_date, format_operation_amount, get_last_five_executed_operations
 
 
 def test_load_operations(test_data):
@@ -38,3 +38,9 @@ def test_format_operation_amount():
       }
     }
     assert format_operation_amount(amount) == "31957.58 руб."
+
+
+def test_get_last_five_executed_operations(test_data):
+    operations = get_last_five_executed_operations(test_data)
+    assert all(operation["state"] == "EXECUTED" for operation in operations)
+    assert len(operations) <= 5

@@ -82,5 +82,21 @@ def format_operation_amount(amount: Dict) -> str:
     :return: строковое представление суммы операций
     """
     return f"{amount['amount']} {amount['currency']['name']}"
-# Строковое представлене суммы операции
-# Получение последних 5 выполненных операций
+
+
+def get_last_five_executed_operations(operations: List[Dict]) -> List[Dict]:
+    """
+    Возвращает 5 последних выполненнх операций
+    :param operations: все операции
+    :return: 5 последних выполненных операций
+    """
+    executed_operations = [item for item in operations if item["state"] == "EXECUTED"]
+    for item in executed_operations:
+        item["date"] = format_date(item["date"])
+
+    sorted_operations = list(sorted(executed_operations,
+                                    key=lambda x: [x["date"]["year"], x["date"]["month"],
+                                                   x["date"]["day"], x["date"]["time"]]
+                                    )
+                             )
+    return sorted_operations[-5:]
