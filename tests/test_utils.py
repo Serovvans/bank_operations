@@ -1,7 +1,15 @@
-from bank_operations.utils import fill_omissions
+from bank_operations.utils import load_operations, fill_omissions, card_number_to_string
+
+
+def test_load_operations(test_data):
+    assert load_operations("test_operations.json") == test_data
 
 
 def test_fill_omissions():
     assert fill_omissions([{"to": "president"}])[0].get("from") == ""
     assert fill_omissions([{"to": "", "from": "someone"}])[0].get("from") == "someone"
     assert len(fill_omissions([{"to": ""}, {"from": "someone", "to": ""}])) == 2
+
+
+def test_card_number_to_string():
+    assert card_number_to_string("1596837868705199") == "1596 83** **** 5199"
