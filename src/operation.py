@@ -1,10 +1,11 @@
 import datetime
 
-from typing import Dict
+from src.utils import format_date
 
 
 class Operation(object):
-    def __init__(self, date: Dict, description: str, sender: str,  recipient: str, amount: str):
+    def __init__(self, date: str, description: str, sender: str,  recipient: str, amount: str):
+        date = format_date(date)
         self.date = datetime.datetime(date["year"], date["month"], date["day"])
         self.description = description
         self.sender = sender

@@ -1,16 +1,11 @@
 from src.operation import Operation
-from src.utils import format_date, card_number_to_string,\
+from src.utils import card_number_to_string,\
     bank_account_to_string, format_operation_amount
 
 
 def test_operation(test_data, test_string_operation):
-    """
-    Тестирует строковое представление об операции
-    :param test_string_operation:
-    :return:
-    """
     operation = test_data[0]
-    date = format_date(operation["date"])
+    date = operation["date"]
     description = operation["description"]
 
     sender = list(operation["from"].split())

@@ -95,12 +95,12 @@ def get_last_five_executed_operations(operations: List[Dict]) -> List[Dict]:
     :return: 5 последних выполненных операций
     """
     executed_operations = [item for item in operations if item.get("state") == "EXECUTED"]
-    for item in executed_operations:
-        item["date"] = format_date(item["date"])
 
     sorted_operations = list(sorted(executed_operations,
-                                    key=lambda x: [x["date"]["year"], x["date"]["month"],
-                                                   x["date"]["day"], x["date"]["time"]]
+                                    key=lambda x: [format_date(x["date"])["year"],
+                                                   format_date(x["date"])["month"],
+                                                   format_date(x["date"])["day"],
+                                                   format_date(x["date"])["time"]]
                                     )
                              )
     return sorted_operations[-5:]
