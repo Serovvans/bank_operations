@@ -31,28 +31,32 @@ def fill_omissions(operations: List[Dict]) -> List[Dict]:
     return result
 
 
-def card_number_to_string(card_number: str) -> str:
+def card_number_to_string(sender: str) -> str:
     """
     Переводит номер карты в шаблонное строковое представление
-    :param card_number: номер карты отправителя
+    :param sender: номер карты
     :return: Строковое представление номера карты по шаблону XXXX XX** **** XXXX
     """
-    if not card_number:
+    if not sender:
         return ""
 
-    return f"{card_number[:4]} {card_number[4:6]}** **** {card_number[-4:]}"
+    sender = list(sender.split())
+    card_name = " ".join(sender[:-1])
+    card_number = sender[-1]
+    return f"{card_name} {card_number[:4]} {card_number[4:6]}** **** {card_number[-4:]}"
 
 
 def bank_account_to_string(bank_account: str) -> str:
     """
-    Переводит номер счета получателя в шаблонное строковое представление
-    :param bank_account: номер счета получателя
+    Переводит номер счета в шаблонное строковое представление
+    :param bank_account: номер счета
     :return: Номер счета в формате **XXXX
     """
     if not bank_account:
         return ""
 
-    return "**" + bank_account[-4:]
+    bank_account = list(bank_account.split())[-1]
+    return f"Счет **{bank_account[-4:]}"
 
 
 def format_date(date: str) -> Dict:
