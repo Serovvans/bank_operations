@@ -103,4 +103,4 @@ def get_last_five_executed_operations(operations: List[Dict]) -> List[Dict]:
                                                    format_date(x["date"])["time"]]
                                     )
                              )
-    return sorted_operations[-5:]
+    return (sorted_operations[-5:])[::-1]
