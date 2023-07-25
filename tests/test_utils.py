@@ -1,4 +1,4 @@
-from bank_operations.utils import load_operations, fill_omissions, card_number_to_string, \
+from src.utils import load_operations, fill_omissions, card_number_to_string, \
     bank_account_to_string, format_date, format_operation_amount, get_last_five_executed_operations
 
 

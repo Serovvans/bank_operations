@@ -11,7 +11,7 @@ def load_operations(file_name: str) -> List[Dict]:
     :return: список словарей с информацией об операциях
     """
     file = os.path.join("data", file_name)
-    with open(file) as f:
+    with open(file, encoding="utf8") as f:
         operations = json.load(f)
 
     return operations
@@ -94,7 +94,7 @@ def get_last_five_executed_operations(operations: List[Dict]) -> List[Dict]:
     :param operations: все операции
     :return: 5 последних выполненных операций
     """
-    executed_operations = [item for item in operations if item["state"] == "EXECUTED"]
+    executed_operations = [item for item in operations if item.get("state") == "EXECUTED"]
     for item in executed_operations:
         item["date"] = format_date(item["date"])
 

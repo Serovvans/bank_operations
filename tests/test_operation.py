@@ -1,5 +1,5 @@
-from bank_operations.operation import Operation
-from bank_operations.utils import format_date, card_number_to_string,\
+from src.operation import Operation
+from src.utils import format_date, card_number_to_string,\
     bank_account_to_string, format_operation_amount
 
 
