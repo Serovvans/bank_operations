@@ -11,7 +11,7 @@ def load_operations(file_name: str) -> List[Dict]:
     :return: список словарей с информацией об операциях
     """
     file = os.path.join("data", file_name)
-    with open(file) as f:
+    with open(file, encoding="utf8") as f:
         operations = json.load(f)
 
     return operations
@@ -31,28 +31,32 @@ def fill_omissions(operations: List[Dict]) -> List[Dict]:
     return result
 
 
-def card_number_to_string(card_number: str) -> str:
+def card_number_to_string(sender: str) -> str:
     """
     Переводит номер карты в шаблонное строковое представление
-    :param card_number: номер карты отправителя
+    :param sender: номер карты
     :return: Строковое представление номера карты по шаблону XXXX XX** **** XXXX
     """
-    if not card_number:
+    if not sender:
         return ""
 
-    return f"{card_number[:4]} {card_number[4:6]}** **** {card_number[-4:]}"
+    sender = list(sender.split())
+    card_name = " ".join(sender[:-1])
+    card_number = sender[-1]
+    return f"{card_name} {card_number[:4]} {card_number[4:6]}** **** {card_number[-4:]}"
 
 
 def bank_account_to_string(bank_account: str) -> str:
     """
-    Переводит номер счета получателя в шаблонное строковое представление
-    :param bank_account: номер счета получателя
+    Переводит номер счета в шаблонное строковое представление
+    :param bank_account: номер счета
     :return: Номер счета в формате **XXXX
     """
     if not bank_account:
         return ""
 
-    return "**" + bank_account[-4:]
+    bank_account = list(bank_account.split())[-1]
+    return f"Счет **{bank_account[-4:]}"
 
 
 def format_date(date: str) -> Dict:
@@ -90,13 +94,13 @@ def get_last_five_executed_operations(operations: List[Dict]) -> List[Dict]:
     :param operations: все операции
     :return: 5 последних выполненных операций
     """
-    executed_operations = [item for item in operations if item["state"] == "EXECUTED"]
-    for item in executed_operations:
-        item["date"] = format_date(item["date"])
+    executed_operations = [item for item in operations if item.get("state") == "EXECUTED"]
 
     sorted_operations = list(sorted(executed_operations,
-                                    key=lambda x: [x["date"]["year"], x["date"]["month"],
-                                                   x["date"]["day"], x["date"]["time"]]
+                                    key=lambda x: [format_date(x["date"])["year"],
+                                                   format_date(x["date"])["month"],
+                                                   format_date(x["date"])["day"],
+                                                   format_date(x["date"])["time"]]
                                     )
                              )
     return sorted_operations[-5:]
