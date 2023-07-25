@@ -3,6 +3,11 @@ from src.utils import *
 
 
 def make_operation_object(operation: Dict) -> Operation:
+    """
+    Создаёт объект операции из словаря с информацией о ней
+    :param operation: словарь с информацией об оперции
+    :return: объект оперции
+    """
     date = operation["date"]
     description = operation["description"]
 
@@ -28,6 +33,11 @@ def make_operation_object(operation: Dict) -> Operation:
 
 
 def get_five_last_operations(file_name: str) -> List[Operation]:
+    """
+    Возвращает 5 последних операций в виде объектов операций
+    :param file_name: файл, где хранится информация об операциях
+    :return: список из объектов 5 последних выполненных операций
+    """
     all_operations = load_operations(file_name)
     all_operations = fill_omissions(all_operations)
 
@@ -36,6 +46,11 @@ def get_five_last_operations(file_name: str) -> List[Operation]:
 
 
 def string_last_operations(file_name="operations.json") -> str:
+    """
+    Склеивает строковые представления 5 последних операций
+    :param file_name: файл, где хранится информация об операциях
+    :return: склеенные с пропуском строки строковые представления 5 последних выполненных операций
+    """
     last_operations = get_five_last_operations(file_name)
 
     return "\n\n".join(map(str, last_operations))
