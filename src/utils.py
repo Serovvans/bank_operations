@@ -1,106 +1,55 @@
 import os
 import json
 
-from typing import List, Dict
+from typing import List
+from src.operation import Operation
 
 
-def load_operations(file_name: str) -> List[Dict]:
+def load_operations(file_name: str) -> List[Operation]:
     """
     Загружает данные об операциях из файла operations.json
     file_name: имя файла для загрузки
     :return: список словарей с информацией об операциях
     """
     file = os.path.join("data", file_name)
-    with open(file, encoding="utf8") as f:
-        operations = json.load(f)
+    try:
+        with open(file, encoding="utf8") as f:
+            operations = json.load(f)
+    except FileNotFoundError:
+        print("Отсутствует файл с данными об операциях")
+    except json.JSONDecodeError:
+        print("Не удаётся декодировать файл")
 
-    return operations
-
-
-def fill_omissions(operations: List[Dict]) -> List[Dict]:
-    """
-    Если отправитель оперции пропещен, в словарь добавляется вместо него пустая строка
-    :param operations: список словарей с описанием операций
-    :return: список словарей с описанием операций, в которых заполнили пропуск отправителя
-    """
-    result = operations.copy()
-    for item in result:
-        if "from" not in item:
-            item["from"] = ""
-
-    return result
+    return [Operation(item.get("id"), item.get("date"),  item.get("description"), item.get("from", ""),
+                      item.get("to"), item.get("operationAmount"), item.get("state")) for item in operations]
 
 
-def card_number_to_string(sender: str) -> str:
-    """
-    Переводит номер карты в шаблонное строковое представление
-    :param sender: номер карты
-    :return: Строковое представление номера карты по шаблону XXXX XX** **** XXXX
-    """
-    if not sender:
-        return ""
-
-    sender = list(sender.split())
-    card_name = " ".join(sender[:-1])
-    card_number = sender[-1]
-    return f"{card_name} {card_number[:4]} {card_number[4:6]}** **** {card_number[-4:]}"
-
-
-def bank_account_to_string(bank_account: str) -> str:
-    """
-    Переводит номер счета в шаблонное строковое представление
-    :param bank_account: номер счета
-    :return: Номер счета в формате **XXXX
-    """
-    if not bank_account:
-        return ""
-
-    bank_account = list(bank_account.split())[-1]
-    return f"Счет **{bank_account[-4:]}"
-
-
-def format_date(date: str) -> Dict:
-    """
-    Переводит дату в нужный формат ДД.ММ.ГГГГ
-    :param date: строковое представление даты операции
-    :return: словарь, в которос содержится год, месяц, число и время
-    """
-    items = list(date.split("-"))
-    year = items[0]
-    month = items[1]
-    day, time = items[2].split("T")
-    # Переводим время в количество секунд от начала дня
-    time = list(time.split(":"))
-    float_time = float(time[0]) * 60 * 60 + float(time[1]) * 60 + float(time[2])
-
-    return {"year": int(year),
-            "month": int(month),
-            "day": int(day),
-            "time": float_time}
-
-
-def format_operation_amount(amount: Dict) -> str:
-    """
-    Представляет сумму операции в нужном формате
-    :param amount: информация о сумме оперции
-    :return: строковое представление суммы операций
-    """
-    return f"{amount['amount']} {amount['currency']['name']}"
-
-
-def get_last_five_executed_operations(operations: List[Dict]) -> List[Dict]:
+def get_last_five_executed_operations(operations: List[Operation]) -> List[Operation]:
     """
     Возвращает 5 последних выполненнх операций
     :param operations: все операции
     :return: 5 последних выполненных операций
     """
-    executed_operations = [item for item in operations if item.get("state") == "EXECUTED"]
+    executed_operations = [item for item in operations if item.state == "EXECUTED"]
 
     sorted_operations = list(sorted(executed_operations,
-                                    key=lambda x: [format_date(x["date"])["year"],
-                                                   format_date(x["date"])["month"],
-                                                   format_date(x["date"])["day"],
-                                                   format_date(x["date"])["time"]]
+                                    key=lambda x: [x.get_date().year,
+                                                   x.get_date().month,
+                                                   x.get_date().day,
+                                                   x.get_date().hour * 60 * 60 + x.get_date().minute * 60 +
+                                                   x.get_date().second
+                                                   ]
                                     )
                              )
     return (sorted_operations[-5:])[::-1]
+
+
+def print_last_executed_operations(filename: str) -> None:
+    """
+    Выводит на экран информацию о 5 последних выполненных операциях
+    :param filename:
+    :return:
+    """
+    operations = load_operations(filename)
+
+    print("\n\n".join(map(str, get_last_five_executed_operations(operations))))
