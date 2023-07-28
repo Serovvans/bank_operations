@@ -2,6 +2,8 @@ import pytest
 import os
 import json
 
+from src.operation import Operation
+
 
 @pytest.fixture(scope="session")
 def test_data():
@@ -21,7 +23,6 @@ def test_data():
             }
         },
         "description": "Перевод организации",
-        "from": "Maestro 1596837868705199",
         "to": "Счет 64686473678894779589"
         },
         {
@@ -38,8 +39,34 @@ def test_data():
         "description": "Перевод организации",
         "from": "Visa Platinum 1246377376343588",
         "to": "Счет 14211924144426031657"
-        }
+        },
+        {
+        "id": 407169720,
+        "state": "EXECUTED",
+        "date": "2018-02-03T14:52:08.093722",
+        "operationAmount": {
+            "amount": "67011.26",
+            "currency": {
+                "name": "руб.",
+                "code": "RUB"
+            }
+        },
+        "description": "Перевод с карты на карту",
+        "from": "Счет 14211924144426031657",
+        "to": "Maestro 3806652527413662"
+    }
     ]
+
+
+@pytest.fixture(scope="session")
+def test_objects(test_data):
+    """
+    Фикстура создаёт список из объектов операций по тестовым данным
+    :param test_data:
+    :return:
+    """
+    return [Operation(item.get("id"), item.get("date"),  item.get("description"), item.get("from", ""),
+                      item.get("to"), item.get("operationAmount"), item.get("state")) for item in test_data]
 
 
 @pytest.fixture(scope="session")
@@ -48,7 +75,7 @@ def test_string_operation():
     Фикстура примера текстового вывода операции
     :return:
     """
-    return "26.08.2019 Перевод организации\nMaestro 1596 83** **** 5199 -> Счет **9589\n31957.58 руб."
+    return "26.08.2019 Перевод организации\n -> Счет **9589\n31957.58 руб."
 
 
 @pytest.fixture(scope="session", autouse=True)
